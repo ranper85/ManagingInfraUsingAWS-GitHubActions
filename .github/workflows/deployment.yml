@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 
-=======
 name: Terraform CI/CD
 
 on:
@@ -50,4 +48,4 @@ jobs:
     - name: 'Terraform Apply'
       if: github.ref == 'refs/heads/main'  # Ensures apply is only triggered on the main branch
       run: terraform apply -auto-approve tfplan
->>>>>>> 4f031e2 (Add deployment.yml for GitHub Actions workflow)
+
