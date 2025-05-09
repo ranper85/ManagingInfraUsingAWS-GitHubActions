@@ -1,7 +1,5 @@
-resource "aws_cloudwatch_dashboard" "demo-dashboard" {
-  dashboard_name = "demo-dashboard-${var.instance_name}"
-
-  dashboard_body = jsonencode({
+locals {
+  dashboard_body = {
     widgets = [
       {
         type   = "metric"
@@ -16,7 +14,7 @@ resource "aws_cloudwatch_dashboard" "demo-dashboard" {
               "AWS/EC2",
               "CPUUtilization",
               "InstanceId",
-              aws_instance.web.id 
+              aws_instance.web.id
             ]
           ]
           period = 300
@@ -39,7 +37,7 @@ resource "aws_cloudwatch_dashboard" "demo-dashboard" {
       {
         type   = "metric"
         x      = 0
-        y      = 0
+        y      = 10
         width  = 12
         height = 6
 
@@ -49,7 +47,7 @@ resource "aws_cloudwatch_dashboard" "demo-dashboard" {
               "AWS/EC2",
               "NetworkIn",
               "InstanceId",
-             aws_instance.web.id 
+              aws_instance.web.id
             ]
           ]
           period = 300
@@ -59,9 +57,13 @@ resource "aws_cloudwatch_dashboard" "demo-dashboard" {
         }
       }
     ]
-  })
+  }
 }
 
+resource "aws_cloudwatch_dashboard" "demo-dashboard" {
+  dashboard_name = "demo-dashboard-${var.instance_name}"
+  dashboard_body = jsonencode(local.dashboard_body)
+}
 
 resource "aws_cloudwatch_metric_alarm" "ec2-cpu-alarm" {
   alarm_name                = "terraform-ec2-cpu-alarm"
@@ -72,6 +74,6 @@ resource "aws_cloudwatch_metric_alarm" "ec2-cpu-alarm" {
   period                    = 120
   statistic                 = "Average"
   threshold                 = 10
-  alarm_description         = "This metric monitors ec2 cpu utilization reaches 80%"
+  alarm_description         = "This metric monitors EC2 CPU utilization reaching 10%"
   insufficient_data_actions = []
 }
