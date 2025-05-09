@@ -16,7 +16,7 @@ resource "aws_cloudwatch_dashboard" "demo-dashboard" {
               "AWS/EC2",
               "CPUUtilization",
               "InstanceId",
-              "${var.instance_name}"
+              aws_instance.web.id 
             ]
           ]
           period = 300
@@ -49,12 +49,12 @@ resource "aws_cloudwatch_dashboard" "demo-dashboard" {
               "AWS/EC2",
               "NetworkIn",
               "InstanceId",
-              "${var.instance_name}"
+             aws_instance.web.id 
             ]
           ]
           period = 300
           stat   = "Average"
-          region = "us-east-1"
+          region = "eu-north-1"
           title  = "${var.instance_name} - NetworkIn"
         }
       }
